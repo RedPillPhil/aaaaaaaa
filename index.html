@@ -11,13 +11,20 @@
 			border-radius: 5px;
 			cursor: pointer;
 		}
+
+		#address {
+			margin-top: 20px;
+		}
 	</style>
 </head>
 <body>
 	<button id="connect-button">Connect to MetaMask</button>
+	<div id="address"></div>
 
 	<script>
 		const connectButton = document.getElementById('connect-button');
+		const addressElement = document.getElementById('address');
+
 		connectButton.addEventListener('click', async () => {
 			// First, check if MetaMask is installed
 			if (typeof window.ethereum !== 'undefined') {
@@ -33,6 +40,13 @@
 					// Check if the chain ID is 44
 					if (chainId === '0x2c') {
 						console.log('Connected to MetaMask on chain id 44!');
+
+						// Get the user's address
+						const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+						const address = accounts[0];
+
+						// Display the user's address on the screen
+						addressElement.textContent = `Your address: ${address}`;
 					} else {
 						console.log('Please switch to chain id 44!');
 					}
