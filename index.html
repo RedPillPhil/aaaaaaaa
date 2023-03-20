@@ -3,7 +3,7 @@
 <head>
 	<title>MetaMask Example</title>
 	<style>
-		#connect-button {
+		#connect-button, #mint-button {
 			padding: 10px;
 			background-color: #008CBA;
 			color: #fff;
@@ -20,10 +20,31 @@
 <body>
 	<button id="connect-button">Connect to MetaMask</button>
 	<div id="address"></div>
+	<button id="mint-button">Mint</button>
 
 	<script>
 		const connectButton = document.getElementById('connect-button');
 		const addressElement = document.getElementById('address');
+		const mintButton = document.getElementById('mint-button');
+
+		let contractAddress = '0x3aC22795304A27edb04Cfe2475DCEf0c5C8B5539';
+		let contractAbi = [
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "mint",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		];
+
+		let contract = new window.ethereum.Contract(contractAbi, contractAddress);
 
 		connectButton.addEventListener('click', async () => {
 			// First, check if MetaMask is installed
@@ -36,7 +57,7 @@
 
 					// Get the current chain ID
 					const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-					
+
 					// Check if the chain ID is 44
 					if (chainId === '0x2c') {
 						console.log('Connected to MetaMask on chain id 44!');
@@ -55,6 +76,17 @@
 				}
 			} else {
 				console.log('MetaMask is not installed!');
+			}
+		});
+
+		mintButton.addEventListener('click', async () => {
+			try {
+				// Call the mint function on the contract
+				await contract.methods.mint(1).send({ from: window.ethereum.selectedAddress });
+
+				console.log('Mint successful!');
+			} catch (error) {
+				console.error(error);
 			}
 		});
 	</script>
