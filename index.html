@@ -29,24 +29,24 @@
 
 		let contractAddress = '0x3aC22795304A27edb04Cfe2475DCEf0c5C8B5539';
 		let contractAbi = [
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_to",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_mintAmount",
-        "type": "uint256"
-      }
-    ],
-    "name": "mint",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  }
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_mintAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "mint",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			}
 		];
 
 		let contract = new window.ethereum.Contract(contractAbi, contractAddress);
@@ -86,8 +86,12 @@
 
 		mintButton.addEventListener('click', async () => {
 			try {
+				// Get the user's address
+				const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+				const address = accounts[0];
+
 				// Call the mint function on the contract
-				await contract.methods.mint(1).send({ from: window.ethereum.selectedAddress });
+				await contract.methods.mint(address, 1).send({ from: window.ethereum.selectedAddress, value: 0 });
 
 				console.log('Mint successful!');
 			} catch (error) {
