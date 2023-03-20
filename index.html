@@ -29,19 +29,24 @@
 
 		let contractAddress = '0x3aC22795304A27edb04Cfe2475DCEf0c5C8B5539';
 		let contractAbi = [
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "amount",
-						"type": "uint256"
-					}
-				],
-				"name": "mint",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			}
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_mintAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "mint",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  }
 		];
 
 		let contract = new window.ethereum.Contract(contractAbi, contractAddress);
